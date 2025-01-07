@@ -44,7 +44,7 @@ def get_all_files(path='.', recursive=False):
     return (files, sizes)
 
 
-def create_config(dir_files, file_config_name, pixel, dir_meteo_era, FIRST_YEAR_ERA5, LAST_YEAR_ERA5):
+def create_config(dir_files, file_config_name, pixel, dir_meteo_era, dir_output, FIRST_YEAR_ERA5, LAST_YEAR_ERA5):
     '''
     Use on of the *qca_meteo* files in dir_files to generate the downscaling configurations
 
@@ -86,7 +86,7 @@ def create_config(dir_files, file_config_name, pixel, dir_meteo_era, FIRST_YEAR_
         str_config.append('name_path_reanalysis = %s' % dir_meteo_era)
         str_config.append('# directory di output')
         # str_config.append('name_path_out = %s' % os.path.join(dir_files,'06_meteo_era_new_monthly_%s' % pixel))
-        str_config.append('name_path_out = %s' % os.path.join(dir_files,'06_meteo_era'))
+        str_config.append('name_path_out = %s' % dir_output )# os.path.join(dir_files,'06_meteo_era__new_system'))
         str_config.append('gapmax = 6')
         str_config.append('# Info del sito')
         str_config.append('Site = %s' % site_code)
@@ -131,7 +131,7 @@ def run(dir_era5_co, dir_input, dir_output):
     stat_summary_file = os.path.join(dir_output, 'stat_summary_L2.csv')
     data02_max_min_file = os.path.join(dir_output, 'data_max_min_L2.csv')
 
-    FIRST_YEAR_ERA5 = 1981
+    FIRST_YEAR_ERA5 = 1989 #1981
     LAST_YEAR_ERA5 = 2023
 
     # pixel che uso per il downscaling
@@ -186,7 +186,7 @@ def run(dir_era5_co, dir_input, dir_output):
             file_config_name = os.path.join(ff,'config_%s%s.txt' % (
                   sitecode, '_%s' % pixel))
             #if not os.path.exists(file_config_name):
-            create_config(ff, file_config_name, pixel, dir_era5_co, FIRST_YEAR_ERA5, LAST_YEAR_ERA5)
+            create_config(ff, file_config_name, pixel, dir_era5_co, dir_output, FIRST_YEAR_ERA5, LAST_YEAR_ERA5)
             dict_config = read_config(file_config_name)
             # if not os.path.exists(os.path.join(dict_config['name_path_out'],
             #                                    'stat_%s.txt' % dict_config['Site'])):
